@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.itheima.dao.commodityDao">
+    <select id="findAll" resultType="commodity">
+        select * from commodity
+        <where>
+            stage="true"
+          <if test="name!=null and name!=''">
+            and Name like CONCAT('%',#{name},'%')
+          </if>
+        </where>
+        limit #{start},#{size}
+    </select>
+    
+    <select id="getTotalCount" resultType="int">
+        select count(*) from commodity 
+        <where>
+            stage="true" 
+          <if test="name!=null and name!=''">
+            and Name like CONCAT("%",#{name},"%")
+          </if>
+        </where>
+    </select>
+    
+    <select id="selectCommodityById" resultType="commodity">
+        select * from commodity
+        where Id=#{id}
+    </select>
+    <select id="findAllcommoditybyid" resultType="commodity">
+        select * from commodity
+        where ownerId=#{ownerId} and stage="true"
+    </select>
+    <update id="changprice" >
+        update commodity set Price=#{price}
+        where Id=#{Id}
+   </update>
+   <update id="downcommodity" >
+        update commodity set stage="false"
+        where Id=#{Id}
+   </update>
+   <update id="putwaycommodity" >
+        update commodity set stage="true"
+        where Id=#{Id}
+   </update>
+</mapper>
